@@ -2,11 +2,7 @@
 (require 'json)
 (require 'ivy)
 (require 'ivy-rich)
-
-(defvar steam_account_id nil
-  "Steam Account ID
-  This is different from your `steam_id` which is your user ID.
-  Like `steam_id` you can also get it at: https://steamdb.info/calculator")
+(require 'steaminfo)
 
 (defun sec2last (regexp 2string)
   (save-excursion
@@ -18,7 +14,7 @@
         (replace-match 2string nil nil nil 0)))))
 
 (defun parse-smlo (id)
-  (let ((file2parse "/home/jd/.emacs.d/steam/launchoptions.json")
+  (let ((file2parse "~/.emacs.d/steam/launchoptions.json")
         (json-object-type 'alist)
         (json-array-type 'list)
         (json-key-type 'string))
@@ -42,7 +38,7 @@
       (message "%s" (buffer-string)))))
 
 (defun parse-smlo-full ()
-  (let ((file2parse "/home/jd/.emacs.d/steam/launchoptions.json")
+  (let ((file2parse "~/.emacs.d/steam/launchoptions.json")
         (json-object-type 'alist)
         (json-array-type 'list)
         (json-key-type 'string))
@@ -55,8 +51,8 @@
 
 (defun counsel-steam-game-mod-launchopt ()
   (interactive)
-  (let ((candids (steam-get-steaminfo-gamelist)))
-    (ivy-read "Game List: " candids
+  (let ((candids (steam-get-steaminfo-gamemenu)))
+    (ivy-read "  Launch Options: " candids
               :action (lambda (game)
                         (let ((regexp "\\((\\([0-9]+\\))\\)"))
                           (if (string-match regexp game)
@@ -66,4 +62,4 @@
                                 (async-shell-command (concat "python ~/.local/src/steamacs/steammodlaunchopt.py " id " " prompt))))
                             nil)))))
 
-
+(provide 'counsel-steam-game-mod-launchopt)
