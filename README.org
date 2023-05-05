@@ -1,0 +1,13 @@
+#+title: Welcome to Steamacs!
+#+author: t3mpt0n
+#+date: 2023-05-05
+
+* Intro
+*GabeNU-Steamacs* is a WIP Emacs Steam Launcher. Here are the features available to you at the moment:
+- =M-x counsel-steam-game-menu=: Returns a menu listing your Steam Library.
+- =M-x counsel-steam-recentf=: Returns a menu listing your recently played Steam games.
+- =M-x counsel-steam-game-mod-launchopt=: Like game-menu but edits your launch options.
+
+* WIP
+- Proton Menu Implentation
+- Steam Store
