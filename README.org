@@ -8,6 +8,18 @@
 - =M-x counsel-steam-recentf=: Returns a menu listing your recently played Steam games.
 - =M-x counsel-steam-game-mod-launchopt=: Like game-menu but edits your launch options.
 
+* How to install
+To install *GabeNU-Steamacs*, add this to your =init.el=:
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "STEAMACS_DIRECTORY") ;; Replace "STEAMACS_DIRECTORY" with the directory of your Steamacs install
+(require 'counsel-steam-game-menu)
+(require 'counsel-steam-recentf)
+(require 'counsel-steam-game-mod-launchopt)
+(setq steam_api_key "YOUR_STEAM_API_KEY_HERE") ;; Register or get your api key here: https://steamcommunity.com/dev/apikey
+(setq steam_account_id "AccountID") ;; Go to `https://steamdb.info/calculator` and copy the numbers from 'AccountID'
+(setq steam_id "SteamID") ;; Go to `https://steamdb.info/calculator` and copy the numbers from 'SteamID'
+#+END_SRC
+
 * WIP
 - Proton Menu Implentation
 - Steam Store
