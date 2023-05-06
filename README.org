@@ -28,7 +28,7 @@ $ pip install vdf
 #+END_SRC
 
 * Special Thanks
-- [[https://github.com/Phundrak][Phundrak]]
+- [[https://github.com/Phundrak][Phundrak]] for suggesting I don't hardcode `~/.emacs.d`
 
 * WIP/TODO
 - Proton Menu Implentation
