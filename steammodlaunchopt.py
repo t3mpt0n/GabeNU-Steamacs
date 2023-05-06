@@ -7,8 +7,10 @@ import sys
 class SteamStuff:
 	said0 = subprocess.run(["emacsclient", "--eval", '(format \"%s\" steam_account_id)'], stdout=subprocess.PIPE)
 	said1 = said0.stdout.decode('utf-8').rstrip().replace('"', '')
+	useremacsdir = subprocess.run(["emacsclient", "--eval", '(format \"%s\" user-emacs-directory)'], stdout=subprocess.PIPE)
+	useremacsdir = useremacsdir.stdout.decode('utf-8').rstrip().replace('"', '').replace('~', os.getenv('HOME'))
 	steamacsdir = subprocess.run(["emacsclient", "--eval", '(format \"%s\" steamdir)'], stdout=subprocess.PIPE)
-	steamacsdir = os.getenv("HOME") + "/.emacs.d/" + steamacsdir.stdout.decode('utf-8').rstrip().replace('"', '')
+	steamacsdir = useremacsdir + steamacsdir.stdout.decode('utf-8').rstrip().replace('"', '')
 	localconfig = os.getenv("HOME") + "/.steam/steam/userdata/" + said1 + "/config/localconfig.vdf"
 	with open(localconfig, 'r') as f:
 		data = vdf.parse(f)
