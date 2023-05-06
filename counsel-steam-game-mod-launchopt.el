@@ -14,7 +14,7 @@
         (replace-match 2string nil nil nil 0)))))
 
 (defun parse-smlo (id)
-  (let ((file2parse (concat "~/.emacs.d/" steamdir "/launchoptions.json"))
+  (let ((file2parse (concat user-emacs-directory steamdir "/launchoptions.json"))
         (json-object-type 'alist)
         (json-array-type 'list)
         (json-key-type 'string))
@@ -37,7 +37,7 @@
       (message "%s" (buffer-string)))))
 
 (defun parse-smlo-full ()
-  (let ((file2parse (concat "~/.emacs.d/" steamdir "/launchoptions.json"))
+  (let ((file2parse (concat user-emacs-directory steamdir "/launchoptions.json"))
         (json-object-type 'alist)
         (json-array-type 'list)
         (json-key-type 'string))
@@ -58,7 +58,7 @@
                               (let* ((id (format "%s" (match-string 2 game)))
                                      (launchopts (parse-smlo (string-to-number id)))
                                      (prompt (concat "\"" (read-string "Launch Options: " launchopts) "\"")))
-                                (async-shell-command (concat "python ~/.local/src/steamacs/steammodlaunchopt.py " id " " prompt))))
+                                (async-shell-command (concat "python ~/.local/src/GabeNU-Steamacs/steammodlaunchopt.py " id " " prompt))))
                             nil)))))
 
 (provide 'counsel-steam-game-mod-launchopt)

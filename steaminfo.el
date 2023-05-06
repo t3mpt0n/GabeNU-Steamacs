@@ -16,8 +16,8 @@
 (defvar steamdir "steamacs"
   "Name of Steam Directory on ~/.emacs.d")
 
-(unless (file-exists-p (concat "~/.emacs.d/" steamdir))
-  (make-directory (concat "~/.emacs.d/" steamdir)))
+(unless (file-exists-p (concat user-emacs-directory steamdir))
+  (make-directory (concat user-emacs-directory steamdir)))
 
 (defun steam-get-steaminfo-recentf ()
   "Return a list of recently played games"

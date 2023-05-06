@@ -26,6 +26,9 @@ To have *GabeNU-Steamacs* working properly, make sure that the =vdf= module for 
 $ pip install vdf
 #+END_SRC
 
+* Special Thanks
+- [[https://github.com/Phundrak][Phundrak]]
+
 * WIP/TODO
 - Proton Menu Implentation
 - Steam Store
