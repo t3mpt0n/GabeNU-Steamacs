@@ -58,7 +58,7 @@
                               (let* ((id (format "%s" (match-string 2 game)))
                                      (launchopts (parse-smlo (string-to-number id)))
                                      (prompt (concat "\"" (read-string "Launch Options: " launchopts) "\"")))
-                                (async-shell-command (concat "python ~/.local/src/GabeNU-Steamacs/steammodlaunchopt.py " id " " prompt))))
+                                (async-shell-command (concat "python " steamlaunchoptions_py " " id " " prompt))))
                             nil)))))
 
 (provide 'counsel-steam-game-mod-launchopt)

@@ -19,7 +19,12 @@
 (defcustom steamlauncher_sh (concat user-emacs-directory steamdir "/steamlauncher.sh")
   "Path of `steamlauncher.sh` executable."
   :type 'string
-  :group 'bash-files)
+  :group 'paths)
+
+(defcustom steamlaunchoptions_py (concat user-emacs-directory steamdir "/steamlaunchoptions.py")
+  "Path of `steamlaunchoptions.py` executable."
+  :type 'string
+  :group 'paths)
 
 (unless (file-exists-p (concat user-emacs-directory steamdir))
   (make-directory (concat user-emacs-directory steamdir)))
@@ -39,6 +44,56 @@
       ")"))
     (write-region (point-min) (point-max) steamlauncher_sh)
     (set-file-modes steamlauncher_sh #o755)))
+
+(unless (file-exists-p steamlaunchoptions_py)
+  (with-temp-buffer
+    (insert
+     (concat
+      "#!/usr/bin/env python3\n"
+      "\n"
+      "import vdf\n"
+      "import json\n"
+      "import subprocess\n"
+      "import os\n"
+      "import sys\n"
+      "\n"
+      "localconfig = os.getenv('HOME') + \"/.steam/steam/userdata/" steam_account_id "/config/localconfig.vdf\"\n"
+      "with open(localconfig, 'r') as f:\n"
+      "  data = vdf.parse(f)\n"
+      "  try:\n"
+      "    appdata = data['UserLocalConfigStore']['Software']['valve']['Steam']['apps']\n"
+      "  except KeyError:\n"
+      "    appdata = data['UserLocalConfigStore']['Software']['Valve']['Steam']['apps']\n"
+      "\n"
+      "def getlaunchoptions(appdata):\n"
+      "  appstr = \"{\\n\"\n"
+      "  for key1, inner_dict in appdata.items():\n"
+      "    appstr += '\"' + f\"{key1}\" + '\"' + \": {\\n\"\n"
+      "    for key2, value in inner_dict.items():\n"
+      "      if key2 == \"LaunchOptions\":\n"
+      "        value = value.replace('\"', '\\\\\"')\n"
+      "        appstr += '\"' + f\"{key2}\" + '\"' + \": \" + '\"' + f\"{value}\" + '\"\\n'\n"
+      "    appstr += \"},\\n\"\n"
+      "  appstr += \"}\"\n"
+      "  return appstr\n"
+      "if len(sys.argv) > 1:\n"
+      "  appid = sys.argv[1]\n"
+      "  launchopt = sys.argv[2]\n"
+      "  appdata[appid]['LaunchOptions'] = launchopt\n"
+      "  vdf.dump(data, open(localconfig, 'w'), pretty=True)\n"
+      "  old, new = '},', '}'\n"
+      "  instance = getlaunchoptions(appdata).rfind(old)\n"
+      "  glo = getlaunchoptions(appdata)[:instance] + new + getlaunchoptions(appdata)[instance+len(old):]\n"
+      "  with open(" (concat "\"" (expand-file-name "launchoptions.json" (concat user-emacs-directory steamdir)) "\"") ", 'w') as f:\n"
+      "    print(glo, file=f)\n"
+      "else:\n"
+      "  old, new = '},', '}'\n"
+      "  instance = getlaunchoptions(appdata).rfind(old)\n"
+      "  glo = getlaunchoptions(appdata)[:instance] + new + getlaunchoptions(appdata)[instance+len(old):]\n"
+      "  with open(" (concat "\"" (expand-file-name "launchoptions.json" (concat user-emacs-directory steamdir)) "\"") ", 'w') as f:\n"
+      "    print(glo, file=f)"))
+    (write-region (point-min) (point-max) steamlaunchoptions_py)
+    (set-file-modes steamlaunchoptions_py #o755)))
 
 (defun steam-get-steaminfo-recentf ()
   "Return a list of recently played games"
