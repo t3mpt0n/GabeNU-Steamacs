@@ -21,8 +21,9 @@ To install *GabeNU-Steamacs*, add this to your =init.el=:
 (setq steamdir "steamacs") ;; OPTIONAL ;; name of steamacs cache directory on .emacs.d
 #+END_SRC
 
+To have *GabeNU-Steamacs* working properly, make sure that the =vdf= module for python is installed:
 #+BEGIN_SRC shell
-$ pip install vdf # Installs the REQUIRED `vdf` module for python
+$ pip install vdf
 #+END_SRC
 
 * WIP/TODO
