@@ -14,14 +14,13 @@
         (replace-match 2string nil nil nil 0)))))
 
 (defun parse-smlo (id)
-  (let ((file2parse "~/.emacs.d/steam/launchoptions.json")
+  (let ((file2parse (concat "~/.emacs.d/" steamdir "/launchoptions.json"))
         (json-object-type 'alist)
         (json-array-type 'list)
         (json-key-type 'string))
     (with-temp-buffer
       (insert-file-contents file2parse)
       (goto-char (point-min))
-      ;(re-search-forward "^$")
       (let* ((json (json-read-from-string (buffer-string)))
              (lo (cdr (assoc "LaunchOptions" (cdr (assoc (number-to-string id) json))))))
         (message "%s" lo)))))
@@ -38,7 +37,7 @@
       (message "%s" (buffer-string)))))
 
 (defun parse-smlo-full ()
-  (let ((file2parse "~/.emacs.d/steam/launchoptions.json")
+  (let ((file2parse (concat "~/.emacs.d/" steamdir "/launchoptions.json"))
         (json-object-type 'alist)
         (json-array-type 'list)
         (json-key-type 'string))

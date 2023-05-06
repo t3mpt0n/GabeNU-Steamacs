@@ -5,8 +5,10 @@ import os
 import sys
 
 class SteamStuff:
-	said0 = os.getenv("STEAM_ACCOUNT_ID")
-	said1 = said0.rstrip().replace('"', '')
+	said0 = subprocess.run(["emacsclient", "--eval", '(format \"%s\" steam_account_id)'], stdout=subprocess.PIPE)
+	said1 = said0.stdout.decode('utf-8').rstrip().replace('"', '')
+	steamacsdir = subprocess.run(["emacsclient", "--eval", '(format \"%s\" steamdir)'], stdout=subprocess.PIPE)
+	steamacsdir = os.getenv("HOME") + "/.emacs.d/" + steamacsdir.stdout.decode('utf-8').rstrip().replace('"', '')
 	localconfig = os.getenv("HOME") + "/.steam/steam/userdata/" + said1 + "/config/localconfig.vdf"
 	with open(localconfig, 'r') as f:
 		data = vdf.parse(f)
@@ -23,7 +25,6 @@ class SteamStuff:
 									appstr += "},\n"
 					appstr += "}"
 					return appstr
-	storelaunchopts = os.getenv("HOME") + "/.emacs.d/steam/launchoptions.json"
 	if len(sys.argv) > 1:
 					appid = sys.argv[1]
 					launchopt = sys.argv[2]
@@ -32,11 +33,11 @@ class SteamStuff:
 					old, new = '},', '}'
 					instance = getlaunchoptions(appdata).rfind(old)
 					glo = getlaunchoptions(appdata)[:instance] + new + getlaunchoptions(appdata)[instance+len(old):]
-					with open("/home/jd/.emacs.d/steam/launchoptions.json", 'w') as f:
+					with open(steamacsdir + "/launchoptions.json", 'w') as f:
 									print(glo, file=f)
 	else:
 					old, new = '},', '}'
 					instance = getlaunchoptions(appdata).rfind(old)
 					glo = getlaunchoptions(appdata)[:instance] + new + getlaunchoptions(appdata)[instance+len(old):]
-					with open("/home/jd/.emacs.d/steam/launchoptions.json", 'w') as f:
+					with open(steamacsdir + "/launchoptions.json", 'w') as f:
 									print(glo, file=f)

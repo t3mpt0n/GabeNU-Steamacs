@@ -13,6 +13,12 @@
   This is different from your `steam_id` which is your user ID.
   Like `steam_id` you can also get it at: https://steamdb.info/calculator")
 
+(defvar steamdir "steamacs"
+  "Name of Steam Directory on ~/.emacs.d")
+
+(unless (file-exists-p (concat "~/.emacs.d/" steamdir))
+  (make-directory (concat "~/.emacs.d/" steamdir)))
+
 (defun steam-get-steaminfo-recentf ()
   "Return a list of recently played games"
   (let* ((url-string (format "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=%s&steamid=%s&format=json" steam_api_key steam_id))
