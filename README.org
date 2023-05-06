@@ -19,6 +19,7 @@ To install *GabeNU-Steamacs*, add this to your =init.el=:
 (setq steam_account_id "AccountID") ;; Go to `https://steamdb.info/calculator` and copy the numbers from 'AccountID'
 (setq steam_id "SteamID") ;; Go to `https://steamdb.info/calculator` and copy the numbers from 'SteamID'
 (setq steamdir "steamacs") ;; OPTIONAL ;; name of steamacs cache directory on .emacs.d
+(setq steamlauncher_sh "<EMACS_DIR>/<STEAMDIR>/steamlauncher.sh") ;; OPTIONAL ;; path for steamlauncher.sh that Steamacs uses to launch steam games.
 #+END_SRC
 
 To have *GabeNU-Steamacs* working properly, make sure that the =vdf= module for python is installed:

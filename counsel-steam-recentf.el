@@ -16,7 +16,7 @@
               :action (lambda (game)
                         (let ((regexp "\\((\\([0-9]+\\))\\)")) ; Regular expression to match text in parentheses
                           (if (string-match regexp game)
-                              (async-shell-command (concat "/bin/bash ~/.local/opt/scripts/steam_launcher.sh " (format "%s" (match-string 2 game))))
+                              (async-shell-command (concat "/bin/bash " steamlauncher_sh " " (format "%s" (match-string 2 game))))
                             nil))))))
 
 (provide 'counsel-steam-recentf)

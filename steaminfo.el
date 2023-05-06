@@ -14,10 +14,31 @@
   Like `steam_id` you can also get it at: https://steamdb.info/calculator")
 
 (defvar steamdir "steamacs"
-  "Name of Steam Directory on ~/.emacs.d")
+  "Name of Steamacs Directory on `user-emacs-directory`")
+
+(defcustom steamlauncher_sh (concat user-emacs-directory steamdir "/steamlauncher.sh")
+  "Path of `steamlauncher.sh` executable."
+  :type 'string
+  :group 'bash-files)
 
 (unless (file-exists-p (concat user-emacs-directory steamdir))
   (make-directory (concat user-emacs-directory steamdir)))
+
+(unless (file-exists-p steamlauncher_sh)
+  (with-temp-buffer
+    (insert
+     (concat
+      "#!/bin/bash\n"
+      "\n"
+      "steam -silent -applaunch $1 2>&1 | tee >(\n"
+      "  while read line; do\n"
+      "    if [[ $line == *\"Game process removed: AppID $1\"* ]]; then\n"
+      "      sleep 2; pkill steam; break\n"
+      "    fi\n"
+      "  done\n"
+      ")"))
+    (write-region (point-min) (point-max) steamlauncher_sh)
+    (set-file-modes steamlauncher_sh #o755)))
 
 (defun steam-get-steaminfo-recentf ()
   "Return a list of recently played games"
