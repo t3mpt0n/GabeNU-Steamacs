@@ -1,12 +1,14 @@
 #+title: Welcome to Steamacs!
 #+author: t3mpt0n
 #+date: 2023-05-05
+#+language: en
+Para leer este archivo en español, haz clic [[./LEEME.org][aquí.]]
 
 * Intro
 *GabeNU-Steamacs* is a WIP Emacs Steam Launcher. Here are the features available to you at the moment:
-- =M-x counsel-steam-game-menu=: Returns a menu listing your Steam Library.
-- =M-x counsel-steam-recentf=: Returns a menu listing your recently played Steam games.
-- =M-x counsel-steam-game-mod-launchopt=: Like game-menu but edits your launch options.
+- =M-x counsel-steam-game-menu= :: Returns a menu listing your Steam Library.
+- =M-x counsel-steam-recentf= :: Returns a menu listing your recently played Steam games.
+- =M-x counsel-steam-game-mod-launchopt= :: Like game-menu but edits your launch options.
 
 * How to install
 To install *GabeNU-Steamacs*, add this to your =init.el=:
@@ -23,12 +25,33 @@ To install *GabeNU-Steamacs*, add this to your =init.el=:
 #+END_SRC
 
 To have *GabeNU-Steamacs* working properly, make sure that the =vdf= module for python is installed:
-#+BEGIN_SRC shell
-$ pip install vdf
+#+BEGIN_SRC sh
+pip install vdf
+#+END_SRC
+
+
+If you have NixOS you can do the following:
+#+BEGIN_SRC nix
+environment.systemPackages = with pkgs; [
+  (python311.withPackages (p: with p; [
+    pip
+    vdf
+  ]))
+]
+#+END_SRC
+
+or if you have home-manager you can do this:
+#+BEGIN_SRC nix
+home.packages = with pkgs; [
+  (python311.withPackages (p: with p; [
+    pip
+    vdf
+  ]))
+]
 #+END_SRC
 
 * Special Thanks
-- [[https://github.com/Phundrak][Phundrak]] for suggesting I don't hardcode `~/.emacs.d`
+- [[https://github.com/Phundrak][Phundrak]] :: For suggesting I don't hardcode =~/.emacs.d=.
 
 * WIP/TODO
 - Proton Menu Implentation

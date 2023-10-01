@@ -1,20 +1,21 @@
 (require 'url)
 (require 'json)
+(require 'cl-lib)
 
 (defvar steam_api_key nil
   "Steam WebAPI Key.
    You can either register or get your key over at this link: https://steamcommunity.com/dev/apikey")
 (defvar steam_id nil
-  "Steam User ID
+  "Steam User ID.
    You can get it from this link: https://steamdb.info/calculator")
 
 (defvar steam_account_id nil
-  "Steam Account ID
+  "Steam Account ID.
   This is different from your `steam_id` which is your user ID.
   Like `steam_id` you can also get it at: https://steamdb.info/calculator")
 
 (defvar steamdir "steamacs"
-  "Name of Steamacs Directory on `user-emacs-directory`")
+  "Name of Steamacs Directory on `user-emacs-directory`.")
 
 (defcustom steamlauncher_sh (concat user-emacs-directory steamdir "/steamlauncher.sh")
   "Path of `steamlauncher.sh` executable."
@@ -26,11 +27,7 @@
   :type 'string
   :group 'paths)
 
-(unless (file-exists-p (concat user-emacs-directory steamdir))
-  (make-directory (concat user-emacs-directory steamdir)))
-
-(unless (file-exists-p steamlauncher_sh)
-  (with-temp-buffer
+(unless (file-exists-p (concat user-emacs-directory steamdir)) (make-directory (concat user-emacs-directory steamdir))) (unless (file-exists-p steamlauncher_sh) (with-temp-buffer
     (insert
      (concat
       "#!/bin/bash\n"
@@ -139,4 +136,31 @@
                         (format "%-98s %-10s %s%s" (concat appid " " name) playtime (propertize "⚠" 'face '(:foreground "yellow" :height 1.5)) (propertize "NOT INSTALLED!" 'face '(:foreground  "red"))))))
                   games))))))
 
+(defun steam-get-steaminfo-current-proton-version (id)
+  "Return the current proton version of a steam game. Returns \"Off or Native\" if no proton version found."
+  (let ((file2parse (concat user-emacs-directory steamdir "/protonversions.json"))
+        (json-object-type 'alist)
+        (json-array-type 'list)
+        (json-key-type 'string))
+    (with-temp-buffer
+      (insert-file-contents file2parse)
+      (goto-char (point-min))
+      (let* ((json (json-read-from-string (buffer-string)))
+             (proget (cdr (assoc "name" (cdr (assoc (number-to-string id) json))))))
+        (defalias 'rizz 'replace-regexp-in-string)
+        (cond
+         ((or (string-equal proget "proton_8") (string-equal proget "proton_7") (string-equal proget "proton_5")) (format "%s" (rizz "^p\\(roton\\)_\\([0-9]\\)$" "P\\1 \\2.0" proget)))
+         ((string-equal proget "proton_experimental") (format "Proton Experimental"))
+         ((or (string-equal proget "proton_513") (string-equal proget "proton_63") (string-equal proget "proton_411") (string-equal proget "proton_42") (string-equal proget "proton_316") (string-equal proget "proton_37")) (rizz "^p\\(roton\\)_\\([0-9]\\)\\([0-9]+\\)$" "P\\1 \\2.\\3" proget))
+         ((string-equal proget "") (format "Off or Native"))
+         (t (format "%s" proget)))))))
+
+(defun steam-get-steaminfo-list-protonver ()
+  "Return a list of all currently available Official and Eggroll Proton versions."
+  (let ((eggroll-repo "https://github.com/GloriousEggroll/proton-ge-custom.git")
+        (eggroll-clone-dir (concat user-emacs-directory steamdir "/eggroll-repo")))
+    (magit-clone-regular eggroll-repo eggroll-clone-dir nil)))
+
+;;(message "%s" (steam-get-steaminfo-current-proton-version 220))
+;; (message "%s" (steam-get-steaminfo-list-protonver))
 (provide 'steaminfo)

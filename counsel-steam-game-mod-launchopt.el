@@ -36,17 +36,17 @@
       (sec2last ",}" "}")
       (message "%s" (buffer-string)))))
 
-(defun parse-smlo-full ()
-  (let ((file2parse (concat user-emacs-directory steamdir "/launchoptions.json"))
-        (json-object-type 'alist)
-        (json-array-type 'list)
-        (json-key-type 'string))
-    (with-temp-buffer
-      (insert-file-contents file2parse)
-      (goto-char (point-min))
-      (re-search-forward "^$")
-      (sec2last ",}" "}")
-      (message "%s" (buffer-string)))))
+;;(defun parse-smlo-full ()
+;;  (let ((file2parse (concat user-emacs-directory steamdir "/launchoptions.json"))
+;;        (json-object-type 'alist)
+;;        (json-array-type 'list)
+;;        (json-key-type 'string))
+;;    (with-temp-buffer
+;;      (insert-file-contents file2parse)
+;;      (goto-char (point-min))
+;;      (re-search-forward "^$")
+;;      (sec2last ",}" "}")
+;;      (message "%s" (buffer-string)))))
 
 (defun counsel-steam-game-mod-launchopt ()
   (interactive)

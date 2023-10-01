@@ -1,0 +1,57 @@
+#+title: ¡Bienvenidos a Steamacs!
+#+author: t3mpt0n
+#+date: 2023-10-01
+#+language: en
+
+* Introducción
+*GabeNU-Steamacs* es un lanzador de Steam para Emacs en elaboración. A continuación encontrarás una lista de herramientas disponibles a usted (por ahora):
+- =M-x counsel-steam-game-menu= :: Devuelve un menú de su biblioteca de Steam.
+- =M-x counsel-steam-recentf= :: Devuelve un menú de sus juegos jugados más reciente en Steam.
+- =M-x counsel-steam-game-mod-launchopt= :: Es similar a game-menu pero es para editar sus opciones de lanzamiento.
+
+* ¿Como instalar?
+Para instalar *GabeNU-Steamacs*, puedes añadir esto a su =init.el=:
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "DIRECTORIO_DE_INSTALACIÓN_DE_STEAMACS") ;; Reemplace ¨DIRECCIÓN_DE_INSTALACIÓN_DE_STEAMACS con el directorio actual de su instalación de Steamacs
+(require 'counsel-steam-game-menu)
+(require 'counsel-steam-recentf)
+(require 'counsel-steam-game-mod-launchopt)
+(setq steam_api_key "SU_LLAVE_DE_IPA_DE_STEAM_AQUÍ") ;; Registra u obtenga su llave de IPA aquí: https://steamcommunity.com/dev/apikey
+(setq steam_account_id "IDDeCuenta") ;; Ve a `https://steamdb.info/calculator` y copia los números de 'AccountID'
+(setq steam_id "IDDeSteam") ;; Ve a `https://steamdb.info/calculator` y copia los números de 'SteamID'
+(setq steamdir "steamacs") ;; OPCIONAL ;; nombre del directorio de caché de steamacs en .emacs.d
+(setq steamlauncher_sh "<DIR_DE_EMACS>/<DIR_DE_STEAM>/steamlauncher.sh") ;; OPCIONAL ;; ruta a steamlauncher.sh que Steamacs usa para lanzar juegos de Steam.
+#+END_SRC
+
+Para que *GabeNU-Steamacs* funcione, chequea que el módulo =vdf= para python esta instalado:
+#+BEGIN_SRC sh
+pip install vdf
+#+END_SRC
+
+
+Si tienes NixOS, puedes hacer:
+#+BEGIN_SRC nix
+environment.systemPackages = with pkgs; [
+  (python311.withPackages (p: with p; [
+    pip
+    vdf
+  ]))
+]
+#+END_SRC
+
+o con home-manager puedes hacer:
+#+BEGIN_SRC nix
+home.packages = with pkgs; [
+  (python311.withPackages (p: with p; [
+    pip
+  vdf
+  ]))
+]
+#+END_SRC
+
+* Gracias a
+- [[https://github.com/Phundrak][Phundrak]] :: Por sugerir que yo no programo =~/.emacs.d= directamente.
+
+* En elaboración o lista de tareas
+- Implementar menú de proton
+- Implementar tienda de Steam
